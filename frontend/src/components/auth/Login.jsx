@@ -26,7 +26,8 @@ const Login = () => {
         setInput({ ...input, [e.target.name]: e.target.value });
     }
 
-    const { isLoading, user } = useSelector((state) => state.auth);
+    // const { isLoading, user } = useSelector((state) => state.auth);
+    const { isLoading } = useSelector((state) => state.auth);
 
     const submithandler = async (e) => {
         e.preventDefault();
@@ -39,9 +40,10 @@ const Login = () => {
                 withCredentials: true
             });
             if (res.data.success) {
-                dispatch(setUser(res.data.user))
-                toast.success(res.data.user || 'Login successful!');
+                dispatch(setUser(res.data.message))
                 navigate("/");
+                console.log(res.data.message.fullName, res.data);
+                toast.success(`${res.data.message.fullName} logged in successfully!`);
             }
         } catch (error) {
             console.log(error);
@@ -53,7 +55,7 @@ const Login = () => {
             console.log(toast.error(errorMessage));
 
         } finally {
-            dispatch(setLoading(false))
+            // dispatch(setLoading(false))
         }
     }
 

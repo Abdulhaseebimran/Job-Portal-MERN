@@ -52,9 +52,11 @@ const Signup = () => {
                 },
                 withCredentials: true
             });
+            console.log(res.data);
             if (res.data.success) {
-                toast.success(res.data.message || 'Sign-Up successful!');
+                console.log(res.data.message, res.data);
                 navigate("/login");
+                toast.success(res.data.message || 'Sign-Up successful!');
             }
         } catch (error) {
             console.log(error);
