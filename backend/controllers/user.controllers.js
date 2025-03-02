@@ -103,9 +103,8 @@ export const updateProfile = asyncHandler(async (req, res) => {
     // }
 
     let skillsArray;
-
-    if(skills){
-        skillsArray = skills.split(',').map((skill) => skill.trim());
+    if (skills) {
+      skillsArray = skills.split(",");
     }
 
     const user = await User.findById(req.user.id);
@@ -117,8 +116,8 @@ export const updateProfile = asyncHandler(async (req, res) => {
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;
     if (profile) user.profile = profile;
-    if (bio) user.bio = bio;
-    if (skills) user.skills = skillsArray;
+    if (bio) user.profile.bio = bio;
+    if (skills) user.profile.skills = skillsArray;
 
     await user.save();
 

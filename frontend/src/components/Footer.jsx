@@ -24,7 +24,7 @@ const Footer = () => {
           <div className="mb-6 md:mb-0">
             <h2 className="text-3xl font-extrabold tracking-wider">Job Portal</h2>
             <p className="mt-2 text-sm">
-              Find your dream job with us. © 2024 Job Portal. All rights reserved.
+              Find your dream job with us. © 2025 Job Portal. All rights reserved.
             </p>
           </div>
           <nav className="flex flex-wrap gap-6">

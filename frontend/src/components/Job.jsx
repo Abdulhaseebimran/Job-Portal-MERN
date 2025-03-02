@@ -7,7 +7,8 @@ import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 
 const Job = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const jobId = 1213123;
 
   return (
     <motion.div
@@ -61,7 +62,7 @@ const Job = () => {
       <div className="flex items-center gap-4">
         <Button
           variant="outline"
-          onClick={() => navigate('/details')}
+          onClick={() => navigate(`/description/${jobId}`)}
           className="rounded-md"
         >
           Details
