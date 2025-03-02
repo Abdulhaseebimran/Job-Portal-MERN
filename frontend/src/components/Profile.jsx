@@ -8,10 +8,13 @@ import { Badge } from './ui/badge';
 import { Label } from './ui/label';
 import AppliedJobTable from './AppliedJobTable';
 import UpdateProfileDialog from './UpdateProfileDialog';
+import { useSelector } from 'react-redux';
 
 const Profile = () => {
-  const [open, setOpen] = useState(false)
-  // const {user} = useSelector(store=>store.auth)
+  const isResume = true;
+  const [open, setOpen] = useState(false);
+  const { user } = useSelector(store => store.auth);
+  const colors = ["bg-blue-500", "bg-green-500", "bg-yellow-500", "bg-red-500", "bg-purple-500"];
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       <Navbar />
@@ -21,8 +24,8 @@ const Profile = () => {
             <AvatarImage src="https://static.vecteezy.com/system/resources/thumbnails/008/214/517/small_2x/abstract-geometric-logo-or-infinity-line-logo-for-your-company-free-vector.jpg" alt='Profile Picture' />
           </Avatar>
           <div>
-            <h1 className='font-semibold text-2xl text-gray-900'>Abdul Haseeb</h1>
-            <p className='text-gray-600'>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellendus, nemo Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo, maxime.</p>
+            <h1 className='font-semibold text-2xl text-gray-900'>{user?.fullName}</h1>
+            <p className='text-gray-600'>{user?.profile?.bio}</p>
           </div>
           <div>
             <Button className="ml-auto border-gray-400 hover:bg-gray-200 transition-all duration-200" variant="outline"
@@ -34,31 +37,66 @@ const Profile = () => {
         <div className='my-5'>
           <div className='flex items-center gap-3 my-2 text-gray-700'>
             <Mail />
-            <span>haseeb@gmail.com</span>
+            <span>{user?.email}</span>
           </div>
           <div className='flex items-center gap-3 my-2 text-gray-700'>
             <Contact />
-            <span>+92 12313 12313</span>
+            <span>{user?.phoneNumber}</span>
           </div>
         </div>
         <div className='my-5'>
           <h1 className='font-bold text-lg text-gray-800'>Skills</h1>
           <div className='flex flex-wrap gap-2 mt-2'>
-            <Badge className='bg-blue-500 text-white px-3 py-1 rounded-md shadow-md'>React</Badge>
-            <Badge className='bg-green-500 text-white px-3 py-1 rounded-md shadow-md'>Node.js</Badge>
-            <Badge className='bg-yellow-500 text-white px-3 py-1 rounded-md shadow-md'>Express</Badge>
+            {user?.profile?.skills.length > 0 ? (
+              user?.profile?.skills.map((item, index) => (
+                <Badge
+                  key={index}
+                  className={`${colors[index % colors.length]} text-white px-3 py-1 rounded-md shadow-md`}
+                >
+                  {item}
+                </Badge>
+              ))
+            ) : (
+              <span>NA</span>
+            )}
           </div>
         </div>
-        <div className='grid w-full max-w-sm items-center gap-1.5'>
+        <div className="grid w-full max-w-sm items-center gap-2">
           <Label className="text-md font-bold text-gray-800">Resume</Label>
-          <a target="_blank" href="#" className='text-blue-500 hover:underline cursor-pointer'>Download Resume</a>
+
+          {isResume && user?.profile?.resume ? (
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={user.profile.resume}
+              className="text-blue-500 hover:underline flex items-center gap-2 p-2 rounded-md border border-gray-300 shadow-sm hover:shadow-md transition-all duration-300"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-blue-500"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 4v12m0 0l3-3m-3 3l-3-3M16 16H8"
+                />
+              </svg>
+              <span className="truncate max-w-[200px]">{user?.profile?.resumeOriginalName || "Download Resume"}</span>
+            </a>
+          ) : (
+            <span className="text-gray-500 italic">NA</span>
+          )}
         </div>
       </div>
       <div className='max-w-4xl mx-auto bg-white rounded-2xl p-5 my-5 shadow-lg transition-all duration-300 hover:shadow-2xl'>
         <h1 className='font-bold text-lg text-gray-900'>Applied Jobs</h1>
         <AppliedJobTable />
       </div>
-      <UpdateProfileDialog open={open} setOpen={setOpen}/>
+      <UpdateProfileDialog open={open} setOpen={setOpen} />
     </motion.div>
   );
 }

@@ -19,7 +19,7 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         fullName: user?.fullName || "",
         email: user?.email || "",
         phoneNumber: user?.phoneNumber || "",
-        bio: user?.bio || "",
+        bio: user?.profile?.bio || "",
         skills: user?.profile?.skills?.join(", ") || "",
         file: user?.profile?.resume || ""
 
