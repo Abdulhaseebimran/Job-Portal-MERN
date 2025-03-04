@@ -41,9 +41,20 @@ const Navbar = () => {
                 </div>
                 <div className='flex items-center gap-12'>
                     <ul className='flex font-medium items-center gap-5'>
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/jobs">Jobs</Link></li>
-                        <li><Link to="/browse">Browse</Link></li>
+                        {
+                            user && user.role === "recruiter" ? (
+                                <>
+                                    <li><Link to="/admin/companies">Companies</Link></li>
+                                    <li><Link to="/admin/jobs">Jobs</Link></li>
+                                </>
+                            ) : (
+                                <>
+                                    <li><Link to="/">Home</Link></li>
+                                    <li><Link to="/jobs">Jobs</Link></li>
+                                    <li><Link to="/browse">Browse</Link></li>
+                                </>
+                            )
+                        }
                     </ul>
                     {
                         !user ? (
@@ -77,16 +88,20 @@ const Navbar = () => {
                                         </div>
                                     </div>
                                     <div className='flex flex-col text-gray-600'>
-                                        <div className='flex w-fit items-center gap-2 cursor-pointer'>
-                                            <User2 />
-                                            <Button
-                                                variant='link'
-                                                className='w-full justify-start'
-                                                onClick={() => navigate("/profile")}
-                                            >
-                                                View Profile
-                                            </Button>
-                                        </div>
+                                        {
+                                            user && user.role == 'student' && (
+                                                <div className='flex w-fit items-center gap-2 cursor-pointer'>
+                                                    <User2 />
+                                                    <Button
+                                                        variant='link'
+                                                        className='w-full justify-start'
+                                                        onClick={() => navigate("/profile")}
+                                                    >
+                                                        View Profile
+                                                    </Button>
+                                                </div>
+                                            )
+                                        }
                                         <div className='flex w-fit items-center gap-2 cursor-pointer'>
                                             <LogOut />
                                             <Button
