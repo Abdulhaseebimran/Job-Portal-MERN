@@ -3,8 +3,39 @@ import { motion } from 'framer-motion';
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { FaMapMarkerAlt, FaCalendarAlt, FaUser, FaMoneyBillAlt, FaBriefcase } from "react-icons/fa";
+import { Application_API_END_POINT, JOB_API_END_POINT } from "../../utils/constant.js";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setSingleJob } from "../../redux/jobSlice";
+import axios from 'axios';
 
 const JobDescription = () => {
+    // const isApplied = true;
+    const { singleJob } = useSelector(store => store.job);
+    const { user } = useSelector(store => store.auth)
+    const isIntiallyApplied = singleJob?.applications.some(application => application.applicant === user?._id) || false;
+    const [isApplied, setIsApplied] = useState(isIntiallyApplied)
+    const params = useParams();
+    const jobId = params.id;
+    const dispatch = useDispatch();
+
+    
+    useEffect(() => {
+        const fetchSingleJob = async () => {
+            try {
+                const res = await axios(`${JOB_API_END_POINT}/get/${jobId}`, { withCredentials: true });
+                if (res.data.success) {
+
+                    dispatch(setSingleJob(res.data.job))
+                    setIsApplied(res.data.job.applications.some(application => application.applicant === user?._id))
+                }
+            } catch (error) {
+                console.log(error);
+
+            }
+        }
+        fetchSingleJob();
+    }, [jobId, dispatch, user?._id])
     return (
         <motion.div
             className="max-w-5xl mx-auto my-10 bg-white shadow-lg rounded-2xl p-8 transition-all duration-300 hover:shadow-2xl"
@@ -21,9 +52,9 @@ const JobDescription = () => {
                         <Badge className='bg-indigo-100 text-indigo-600 font-semibold px-3 py-1 rounded-md shadow-sm' variant="ghost">10 LPA</Badge>
                     </div>
                 </div>
-                {/* <Button
+                <Button
                     onClick={isApplied ? null : applyJobHandler}
-                    disabled={isApplied} className={`rounded-lg ${isApplied ? 'bg-gray-600 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'}`}>{isApplied ? "Already Applied" : "Apply Now"}</Button> */}
+                    disabled={isApplied} className={`rounded-lg ${isApplied ? 'bg-gray-600 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'}`}>{isApplied ? "Already Applied" : "Apply Now"}</Button>
             </div>
             <h1 className="border-b-2 border-white/20 font-medium py-4 text-lg text-black">Job Description</h1>
             <motion.div
