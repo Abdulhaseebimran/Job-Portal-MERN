@@ -19,7 +19,7 @@ const JobDescription = () => {
     const jobId = params.id;
     const dispatch = useDispatch();
 
-    
+
     useEffect(() => {
         const fetchSingleJob = async () => {
             try {
@@ -45,11 +45,11 @@ const JobDescription = () => {
         >
             <div className="flex items-center justify-between border-b pb-4">
                 <div>
-                    <h1 className="font-bold text-2xl text-gray-900">Developer</h1>
+                    <h1 className="font-bold text-2xl text-gray-900">{singleJob?.title}</h1>
                     <div className="flex gap-2 mt-2">
-                        <Badge className='bg-blue-100 text-blue-700 font-semibold px-3 py-1 rounded-md shadow-sm' variant="ghost">Positions</Badge>
-                        <Badge className='bg-red-100 text-red-600 font-semibold px-3 py-1 rounded-md shadow-sm' variant="ghost">Web Developer</Badge>
-                        <Badge className='bg-indigo-100 text-indigo-600 font-semibold px-3 py-1 rounded-md shadow-sm' variant="ghost">10 LPA</Badge>
+                        <Badge className='bg-blue-100 text-blue-700 font-semibold px-3 py-1 rounded-md shadow-sm' variant="ghost">{singleJob?.position} Positions</Badge>
+                        <Badge className='bg-red-100 text-red-600 font-semibold px-3 py-1 rounded-md shadow-sm' variant="ghost">{singleJob?.jobType}</Badge>
+                        <Badge className='bg-indigo-100 text-indigo-600 font-semibold px-3 py-1 rounded-md shadow-sm' variant="ghost">{singleJob?.salary} LPA</Badge>
                     </div>
                 </div>
                 <Button
@@ -66,27 +66,31 @@ const JobDescription = () => {
                 <div className="space-y-4">
                     <div className="flex items-center">
                         <FaBriefcase className="w-5 h-5 mr-2 text-indigo-300" />
-                        <h1 className="font-semibold text-black">Role:<span className="pl-4 font-normal">Web Developer</span></h1>
+                        <h1 className="font-semibold text-black">Role:<span className="pl-4 font-normal">{singleJob?.title}</span></h1>
                     </div>
                     <div className="flex items-center">
                         <FaMapMarkerAlt className="w-5 h-5 mr-2 text-red-300" />
-                        <h1 className="font-semibold text-black">Location:<span className="pl-4 font-normal">Karachi</span></h1>
+                        <h1 className="font-semibold text-black">Location:<span className="pl-4 font-normal">{singleJob?.location}</span></h1>
                     </div>
                     <div className="flex items-center">
                         <FaMoneyBillAlt className="w-5 h-5 mr-2 text-green-300" />
-                        <h1 className="font-semibold text-black">Salary:<span className="pl-4 font-normal">2 LPA</span></h1>
+                        <h1 className="font-semibold text-black">Salary:<span className="pl-4 font-normal">{singleJob?.salary} LPA</span></h1>
                     </div>
                     <div className="flex items-center">
                         <FaUser className="w-5 h-5 mr-2 text-blue-300" />
-                        <h1 className="font-semibold text-black">Experience:<span className="pl-4 font-normal">2 yrs</span></h1>
+                        <h1 className="font-semibold text-black">Experience:<span className="pl-4 font-normal">{singleJob?.experience} yrs</span></h1>
                     </div>
                     <div className="flex items-center">
                         <FaCalendarAlt className="w-5 h-5 mr-2 text-purple-300" />
-                        <h1 className="font-semibold text-black">Posted Date:<span className="pl-4 font-normal">23-12</span></h1>
+                        <h1 className="font-semibold text-black">Description:<span className="pl-4 font-normal">{singleJob?.description}</span></h1>
                     </div>
                     <div className="flex items-center">
                         <FaUser className="w-5 h-5 mr-2 text-yellow-300" />
-                        <h1 className="font-semibold text-black">Total Applicants:<span className="pl-4 font-normal">12</span></h1>
+                        <h1 className="font-semibold text-black">Total Applicants:<span className="pl-4 font-normal">{singleJob?.applications?.length}</span></h1>
+                    </div>
+                    <div className="flex items-center">
+                        <FaUser className="w-5 h-5 mr-2 text-yellow-300" />
+                        <h1 className="font-semibold text-black">Posted Date:<span className="pl-4 font-normal">{singleJob?.createdAt.split("T")[0]}</span></h1>
                     </div>
                 </div>
             </motion.div>
