@@ -19,7 +19,8 @@ export const register = asyncHandler(async (req, res) => {
     const fileUri = getDataUri(file);
     const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
     // Check if email already exists
-    const user = await User.findOne({ email: email });
+    // const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email });
     if (user) {
         throw new ApiError(400, "User already exists");
     }
@@ -102,8 +103,62 @@ export const logout = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, "User logged out successfully"));
 });
 
+export const updateProfile = async (req, res) => {
+    try {
+        const { fullName, email, phoneNumber, bio, skills } = req.body;
 
-export const updateProfile = asyncHandler(async (req, res) => {
+        const file = req.file;
+        //cloudinary ayega idhr
+
+        const fileUri = getDataUri(file);
+        const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+
+        let skillsArray;
+        if (skills) {
+            skillsArray = skills.split(",");
+        }
+        const userId = req.user.id;
+        let user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(400).json({
+                message: "user not found",
+                success: false,
+            });
+        }
+
+        if (fullName) user.fullName = fullName;
+        if (email) user.email = email;
+        if (phoneNumber) user.phoneNumber = phoneNumber;
+        if (bio) user.profile.bio = bio;
+        if (skills) user.profile.skills = skillsArray;
+
+        //resume comes later here...
+
+        if (cloudResponse) {
+            user.profile.resume = cloudResponse.secure_url; //save the cloudinary url
+            user.profile.resumeOriginalName = file.originalname; //save the original file name
+        }
+        await user.save();
+        user = {
+            _id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            role: user.role,
+            profile: user.profile,
+        };
+        return res.status(200).json({
+            message: "profile updated successfully",
+            user,
+            success: true,
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const updateProfileold = asyncHandler(async (req, res) => {
     const { fullName, email, phoneNumber, profile, bio, skills } = req.body;
 
     // if (!fullName || !email || !phoneNumber || !profile, !bio || !skills) {
@@ -116,7 +171,7 @@ export const updateProfile = asyncHandler(async (req, res) => {
 
     let skillsArray;
     if (skills) {
-      skillsArray = skills.split(",");
+        skillsArray = skills.split(",");
     }
 
     const user = await User.findById(req.user.id);

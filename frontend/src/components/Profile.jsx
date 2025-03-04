@@ -63,33 +63,9 @@ const Profile = () => {
         </div>
         <div className="grid w-full max-w-sm items-center gap-2">
           <Label className="text-md font-bold text-gray-800">Resume</Label>
-
-          {isResume && user?.profile?.resume ? (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={user.profile.resume}
-              className="text-blue-500 hover:underline flex items-center gap-2 p-2 rounded-md border border-gray-300 shadow-sm hover:shadow-md transition-all duration-300"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-blue-500"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v12m0 0l3-3m-3 3l-3-3M16 16H8"
-                />
-              </svg>
-              <span className="truncate max-w-[200px]">{user?.profile?.resumeOriginalName || "Download Resume"}</span>
-            </a>
-          ) : (
-            <span className="text-gray-500 italic">NA</span>
-          )}
+          {
+            isResume ? <a target="blank" href={user?.profile?.resume} className='text-blue-500 w-full hover:underline cursor-pointer'>{user?.profile?.resumeOriginalName}</a> : <span>NA</span>
+          }
         </div>
       </div>
       <div className='max-w-4xl mx-auto bg-white rounded-2xl p-5 my-5 shadow-lg transition-all duration-300 hover:shadow-2xl'>

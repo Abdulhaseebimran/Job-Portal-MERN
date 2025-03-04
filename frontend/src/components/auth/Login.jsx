@@ -27,7 +27,7 @@ const Login = () => {
     }
 
     // const { isLoading, user } = useSelector((state) => state.auth);
-    const { isLoading } = useSelector((state) => state.auth);
+    const { isLoading, user } = useSelector((state) => state.auth);
 
     const submithandler = async (e) => {
         e.preventDefault();
@@ -55,15 +55,15 @@ const Login = () => {
             console.log(toast.error(errorMessage));
 
         } finally {
-            // dispatch(setLoading(false))
+            dispatch(setLoading(false))
         }
     }
 
-    // useEffect(() => {
-    //     if (user) {
-    //         navigate("/")
-    //     }
-    // })
+    useEffect(() => {
+        if (user) {
+            navigate("/")
+        }
+    })
     return (
         <div>
             <Navbar />

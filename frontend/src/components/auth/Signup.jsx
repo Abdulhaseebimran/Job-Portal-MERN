@@ -54,22 +54,22 @@ const Signup = () => {
             });
             console.log(res.data);
             if (res.data.success) {
-                console.log(res.data.message, res.data);
+                console.log(res.data.data, res.data);
                 navigate("/login");
-                toast.success(res.data.message || 'Sign-Up successful!');
+                toast.success(res.data?.data || 'Sign-Up successful!');
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message || "All fields are required")
+            toast.error(error.response?.data?.message || "All fields are required")
         } finally {
             dispatch(setLoading(false))
         }
     }
-    // useEffect(() => {
-    //     if (user) {
-    //         navigate("/")
-    //     }
-    // })
+    useEffect(() => {
+        if (user) {
+            navigate("/")
+        }
+    })
     return (
         <div>
             <Navbar />

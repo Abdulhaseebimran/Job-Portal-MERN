@@ -23,7 +23,6 @@ const UpdateProfileDialog = ({ open, setOpen }) => {
         skills: user?.profile?.skills?.join(", ") || "",
         file: user?.profile?.resume || ""
 
-
     });
     const dispatch = useDispatch();
     const changeEventHandler = (e) => {

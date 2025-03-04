@@ -61,26 +61,26 @@ const Navbar = () => {
                             <Popover>
                                 <PopoverTrigger asChild>
                                     <Avatar className='rounded-full cursor-pointer'>
-                                        <AvatarImage src='https://github.com/shadcn.png' />
+                                        <AvatarImage src={user?.profile?.profilePhoto} />
                                     </Avatar>
                                 </PopoverTrigger>
                                 <PopoverContent className='w-88'>
                                     <div className='flex gap-2 space-y-2 items-center'>
                                         <Avatar className='rounded-full cursor-pointer'>
-                                            <AvatarImage src='https://github.com/shadcn.png' />
+                                            <AvatarImage src={user?.profile?.profilePhoto} />
                                         </Avatar>
                                         <div>
-                                            <h4 className='font-medium'>John Doe</h4>
+                                            <h4 className='font-medium'>{user?.fullName}</h4>
                                             <p className='text-sm text-muted-foreground'>
-                                                john@doe.com
+                                                {user?.profile?.bio}
                                             </p>
                                         </div>
                                     </div>
                                     <div className='flex flex-col text-gray-600'>
                                         <div className='flex w-fit items-center gap-2 cursor-pointer'>
                                             <User2 />
-                                            <Button 
-                                                variant='link' 
+                                            <Button
+                                                variant='link'
                                                 className='w-full justify-start'
                                                 onClick={() => navigate("/profile")}
                                             >
@@ -89,8 +89,8 @@ const Navbar = () => {
                                         </div>
                                         <div className='flex w-fit items-center gap-2 cursor-pointer'>
                                             <LogOut />
-                                            <Button 
-                                                variant='link' 
+                                            <Button
+                                                variant='link'
                                                 className='w-full justify-start'
                                                 onClick={logoutHandler}
                                             >
