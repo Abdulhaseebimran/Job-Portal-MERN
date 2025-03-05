@@ -15,9 +15,13 @@ const companySchema = new mongoose.Schema({
     location: {
         type: String,
     },
-    logo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+    logo:{
+        type:String, 
+    },
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'User',
+        // required:true,
     }
 }, { timestamps: true });
 
