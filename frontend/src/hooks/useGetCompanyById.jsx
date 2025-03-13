@@ -13,16 +13,16 @@ const useGetCompanyById = (companyId) => {
           `${Company_API_END_POINT}/getCompany/${companyId}`,
           { withCredentials: true }
         );
-        console.log(res.data.company)
+        // console.log(res.data)
         if (res.data.success) {
-          dispatch(setSingleCompany(res.data.company));
+          dispatch(setSingleCompany(res.data.message));
         }
       } catch (error) {
         console.log(error);
       }
     };
     fetchSingleCompany();
-  }, []);
+  }, [companyId]);
 };
 
 export default useGetCompanyById;

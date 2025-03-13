@@ -7,7 +7,6 @@ import jobModel from "../models/job.models.js";
 
 export const createJob = asyncHandler(async (req, res) => {
     const { title, description, requirements, salary, location, jobType, position, experienceLevel, companyId } = req.body;
-
     if (!title || !description || !requirements || !salary || !location || !jobType || !position || !experienceLevel || !companyId) {
         throw new ApiError(400, "All fields are required");
     }
@@ -45,7 +44,7 @@ export const getAllJobs = asyncHandler(async (req, res) => {
     };
 
     const jobs = await jobModel.find(query).populate({
-        path: "companyId",
+        path: "companyId", select: "name location"
     }).sort({ createdAt: -1 });
 
     if (!jobs) {

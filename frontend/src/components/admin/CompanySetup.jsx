@@ -14,17 +14,29 @@ import useGetCompanyById from "@/hooks/useGetCompanyById";
 
 const CompanySetup = () => {
   const params = useParams();
+  useGetCompanyById(params.id);
+
+  const { singleCompany } = useSelector((store) => store.company);
+  const navigate = useNavigate();
+  const [isLoading, setLoading] = useState(false);
+
   const [input, setInput] = useState({
     name: "",
     description: "",
     website: "",
     location: "",
-    file: "",
+    file: null, // Change to null to correctly handle files
   });
-  useGetCompanyById(params.id);
-  const { singleCompany } = useSelector(store=>store.company)
-  const navigate = useNavigate();
-  const [isLoading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setInput({
+      name: singleCompany?.name || "",
+      description: singleCompany?.description || "",
+      website: singleCompany?.website || "",
+      location: singleCompany?.location || "",
+      file: null, // Keep file as null (users will upload a new one)
+    });
+  }, [singleCompany]);
 
   const changeEventHandler = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
@@ -32,8 +44,11 @@ const CompanySetup = () => {
 
   const changeFileHandler = (e) => {
     const file = e.target.files?.[0];
-    setInput({ ...input, file });
+    if (file) {
+      setInput({ ...input, file });
+    }
   };
+
   const submitHandler = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -41,9 +56,11 @@ const CompanySetup = () => {
     formData.append("description", input.description);
     formData.append("website", input.website);
     formData.append("location", input.location);
+
     if (input.file) {
-      formData.append("file", input.file);
+      formData.append("file", input.file); // Upload only if user selects a file
     }
+
     try {
       setLoading(true);
       const res = await axios.put(
@@ -56,27 +73,17 @@ const CompanySetup = () => {
           withCredentials: true,
         }
       );
-      console.log("Response received:", res.data); 
+
       if (res.data.success) {
         toast.success(res.data.message);
         navigate("/admin/companies");
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message || "An error occurred");
     } finally {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    setInput({
-      name: singleCompany.name || "",
-      description: singleCompany.description || "",
-      website: singleCompany.website || "",
-      location: singleCompany.location || "",
-      file: singleCompany.file || null,
-    });
-  }, [singleCompany]);
 
   return (
     <motion.div
@@ -158,6 +165,8 @@ const CompanySetup = () => {
                 className="dark:bg-gray-700 dark:text-white"
               />
             </div>
+
+            {/* Logo Upload & Display */}
             <div>
               <Label className="dark:text-gray-300">Logo</Label>
               <Input
@@ -166,6 +175,15 @@ const CompanySetup = () => {
                 onChange={changeFileHandler}
                 className="dark:bg-gray-700 dark:text-white"
               />
+              {singleCompany?.logo && !input.file && (
+                <div className="mt-2">
+                  <img
+                    src={singleCompany.logo}
+                    alt="Company Logo"
+                    className="h-20 w-20 rounded-md object-cover border"
+                  />
+                </div>
+              )}
             </div>
           </motion.div>
 

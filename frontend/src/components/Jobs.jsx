@@ -26,8 +26,6 @@ const Jobs = () => {
                 <div className="w-1/5 pr-4 border-r border-gray-200">
                     <FilterCard />
                 </div>
-
-                {/* Job Listings */}
                 <div className="w-4/5 pl-4 overflow-y-auto">
                     {filterJobs.length === 0 ? (
                         <span>Job Not Found</span>
@@ -35,7 +33,7 @@ const Jobs = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-5">
                             {filterJobs.map((job) => (
                                 <div key={job?._id}>
-                                    <Job />
+                                    <Job job={job} />
                                 </div>
                             ))}
                         </div>

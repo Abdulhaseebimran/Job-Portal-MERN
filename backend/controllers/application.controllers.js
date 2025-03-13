@@ -6,6 +6,50 @@ import jwt from "jsonwebtoken";
 import applicationModel from "../models/application.models.js";
 import jobModel from "../models/job.models.js";
 
+// export const applyForJob = asyncHandler(async (req, res) => {
+//     const userId = req.user?.id;
+//     const jobId = req.params.id;
+
+//     if (!jobId) {
+//         throw new ApiError(400, "Job ID is required");
+//     }
+
+//     // Check if job exists
+//     const application = await applicationModel.findOne({ jobId }).populate("applications");
+
+//     if (!application) {
+//         throw new ApiError(404, "Job not found");
+//     }
+
+//     // Check if user has already applied for this job
+//     const job = await jobModel.findById(jobId);
+
+//     if (!job) {
+//         throw new ApiError(404, "Job not found");
+//     }
+
+//     // Check if user has already applied for this job
+//     const existingApplication = await applicationModel.findOne({ job: jobId, applicant: userId });
+//     if (existingApplication) {
+//         throw new ApiError(400, "You have already applied for this job");
+//     }
+
+//     // Create new application
+//     const newApplication = await applicationModel.create({
+//         job: jobId,
+//         applicant: userId,
+//     });
+
+//     job.applications.push(newApplication._id);
+//     await job.save();
+
+//     return res.status(201).json(new ApiResponse(
+//         201,
+//         "Application submitted successfully",
+//         newApplication
+//     ));
+// });
+
 export const applyForJob = asyncHandler(async (req, res) => {
     const userId = req.user?.id;
     const jobId = req.params.id;
@@ -15,15 +59,7 @@ export const applyForJob = asyncHandler(async (req, res) => {
     }
 
     // Check if job exists
-    const application = await applicationModel.findOne({ jobId }).populate("applications");
-
-    if (!application) {
-        throw new ApiError(404, "Job not found");
-    }
-
-    // Check if user has already applied for this job
     const job = await jobModel.findById(jobId);
-
     if (!job) {
         throw new ApiError(404, "Job not found");
     }
@@ -49,7 +85,6 @@ export const applyForJob = asyncHandler(async (req, res) => {
         newApplication
     ));
 });
-
 
 export const getAppliedJobs = asyncHandler(async (req, res) => {
     const userId = req.user?.id;

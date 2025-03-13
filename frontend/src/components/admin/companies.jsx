@@ -6,14 +6,17 @@ import Navbar from '../shared/Navbar';
 import CompaniesTable from './CompaniesTable';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import useGetAllCompanies from '@/hooks/useGetAllCompanies';
+import { setSearchCompanyByText } from '../../../redux/companySlice.js'
 
 const Companies = () => {
+    useGetAllCompanies();
     const [input, setInput] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     useEffect(() => {
-        // dispatch(setSearchCompanyByText(input));
+        dispatch(setSearchCompanyByText(input));
     }, [input, dispatch]);
 
     return (

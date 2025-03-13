@@ -8,11 +8,12 @@ const cardVariants = {
   visible: { opacity: 1, y: 0 }
 }
 
-const LatestJobCards = () => {
+const LatestJobCards = ({ job }) => {
   const navigate = useNavigate()
 
   return (
-    <motion.div 
+    <motion.div
+      onClick={() => navigate(`/description/${job?._id}`)}
       className='p-5 rounded-md shadow-xl bg-white border border-gray-200 cursor-pointer'
       variants={cardVariants}
       initial="hidden"

@@ -35,7 +35,7 @@ const Job = ({ job }) => {
         <Button className="p-2" variant="outline" size="icon">
           <Avatar>
             <AvatarImage
-              src={job?.company?.logo}
+              src={job?.companyId?.logo || "/fallback-logo.png"} 
               alt="Company Logo"
             />
           </Avatar>
