@@ -8,11 +8,13 @@ import userRouter from "./routes/user.routes.js";
 import companyRouter from "./routes/company.routes.js";
 import jobRouter from "./routes/job.routes.js";
 import applicationRouter from "./routes/application.routes.js";
+import path from "path";
 
 // connectDB();
 dotenv.config({});
 const app = express();
 const PORT = process.env.PORT || 3000;
+const _dirname = path.resolve();
 
 const corsOptions = {
     origin: "http://localhost:5173",
@@ -35,6 +37,11 @@ app.get('/', (req, res) => {
         success: true,
     })
 });
+
+app.use(express.static(path.join(_dirname,"/frontend/dist")));
+app.get("*",(_,res)=>{
+   res.sendFile(path.resolve(_dirname,"frontend","dist","index.html"));
+})
 
 app.listen(PORT, () => {
     connectDB();
